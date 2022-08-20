@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,8 @@ public class ItemController {
 
 	@Autowired
 	private ItemRepository itemRepository;
+
+	Logger log = LoggerFactory.getLogger(ItemController.class);
 	
 	@GetMapping
 	public ResponseEntity<List<Item>> getItems() {
@@ -32,6 +35,7 @@ public class ItemController {
 	@GetMapping("/name/{name}")
 	public ResponseEntity<List<Item>> getItemsByName(@PathVariable String name) {
 		List<Item> items = itemRepository.findByName(name);
+		log.info("List item: " + items);
 		return items == null || items.isEmpty() ? ResponseEntity.notFound().build()
 				: ResponseEntity.ok(items);
 	}
